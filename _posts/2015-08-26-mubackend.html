@@ -1,0 +1,26 @@
+---
+layout: post
+title: "MuBackend"
+date: 2015-08-26 06:54:44
+---
+<p>The concept of a nobackend-backend is <!--more-->that it should:</p>
+<ul>
+<li>Facilitate connections between peers</li>
+<li>Forward http-requests to peers</li>
+<li>Enable sync of databases to peers</li>
+<li>Authenticate and give direct access to database rest apis</li>
+</ul>
+<p>I call this a mubackend, as it is a backend that is not doing anything, ie. just forwarding everything. (mu is both <a href="https://en.wikipedia.org/wiki/Mu_%28negative%29">無</a> and <a href="https://en.wikipedia.org/wiki/Micro-">μ</a>). This takes 69 lines of codes, and I have implemented this with the following technologies:</p>
+<ul>
+<li><code>socket.io-p2p</code> handles peer connections, <code>socket.io</code> is also used for fallback</li>
+<li><code>express</code> is used for http-requests, with <code>express-http-proxy</code> being used for connection to databases. Other http-requests are forwarded to peers that are logged in as daemon, through <code>socket.io</code>.</li>
+<li><code>CouchDB</code> handless sync of client databases, and is also accessible as a database service for the clients.</li>
+<li>For database REST APIs, both <code>CouchDB</code> and <code>elasticsearch</code> is supplied. Both are proxied, and <code>elasticsearch</code> is only available for peers logged in as daemon. The authentication is handled in <code>couchdb</code>, and the mubackend.</li>
+</ul>
+<p>This allows a programming model with no distinction between servers and clients, except that servers would usually run headless, and log in with a user with special database privileges.</p>
+<p>The mubackend should be scalable. The weakest components for scalability are</p>
+<ul>
+<li>socket.io, &#8211; which could later be replaced by more optimised code if scalability issues arise</li>
+<li>CouchDB, &#8211; which could late be replaced by CouchBase if scalability issues arise.</li>
+</ul>
+<p>I choose to socket.io/CouchDB as it this is the easiest path, and it would require more work to have some optimised sockets+couchbase. They should also be reasonable scaleable. The mubackend can scale and be load-balanced, if the socket.io code inside of it moves it state to a distributed database.</p>

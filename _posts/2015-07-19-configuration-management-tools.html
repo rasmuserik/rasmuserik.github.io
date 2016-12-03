@@ -1,0 +1,18 @@
+---
+layout: post
+title: "Configuration management tools"
+date: 2015-07-19 04:11:36
+---
+<p>Currently I only have a simple check-list with notes of what needs to be installed/configured/done when installing a new machine. A better solution will be to<!--more--> use an automated configuration management tool.</p>
+<p>A quick search indicates that Ansible, Puppet, CFEngine, Docker, SaltStack and Chef is the most popular ones.  About the communities, there is a nice article that <a href="http://redmonk.com/dberkholz/2015/04/02/quantifying-configuration-management-communities/">quantifies the configuration management communities</a>. I have heard about some of them before, and other are new to me. After a bit of research, these are my takeaways:</p>
+<ul>
+<li>CFEngine is the classical one, &#8211; I rememeber hearing about this from a very competent unix administrateor many years ago.</li>
+<li>PuppetLabs are active in the Clojure community.</li>
+<li>Docker is a different beast than the others, as it focusses on building containers for apps, rather than configuring machines. Both approaches has the effect of easy setup,</li>
+<li>The configuration management tools almost has three generation, CFEngine is the oldest in C; Then there are Puppet and Chef  in ruby; and Ansible and SaltStack are the newest in python.</li>
+<li>Ansible seems to have a focus on keeping it as simple as possible, and looks most approachable, and useful for getting the configuration/setup scripts done.</li>
+<li>SaltStack seems quite well engineered.</li>
+</ul>
+<p>&nbsp;</p>
+<p>As my goal is just to make the machine setup/configuration as easy as possible, Ansible seems the best and most approachable choice, when just deploying on linux.</p>
+<p>All of the platforms has it merits, and especially SaltStack and Docker is also interesting, &#8211; SaltStack seems like a good choice for operations at larger scale, and Docker sounds like the solution for deploying a specific app on many platforms.</p>

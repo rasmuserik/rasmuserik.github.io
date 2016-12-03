@@ -1,0 +1,22 @@
+---
+layout: post
+title: "Habitica backup"
+date: 2016-06-07 20:19:43
+---
+<p>Habitica is good for making habits<br />
+but it has one major shortcoming:<br />
+it does not save historical data.</p>
+<p><!--more--></p>
+<p>This was a deal breaker for me,<br />
+as I want to be able to do data mining<br />
+on my own habit data later on.</p>
+<p>After not using it for a while,<br />
+to day I got around to see<br />
+how to save the historical data myself.</p>
+<p>Fortunately Habitica exposes an API,<br />
+so extracting the data for the current day is as easy as:</p>
+<pre>curl -X GET -H 'x-api-user: XXX' -H 'x-api-key: YYY' https://habitica.com/export/userdata.json</pre>
+<p>Which I added today to the crontab on my server,<br />
+appending it to a file every night,<br />
+so now I can switch the recording the habits<br />
+from my notes to Habitica again.</p>

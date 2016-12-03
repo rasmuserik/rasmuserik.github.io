@@ -1,0 +1,50 @@
+---
+layout: post
+title: "Decentrale apps"
+date: 2016-07-15 06:56:39
+---
+<p>Forøjeblikket går jeg med nogle overvejelser om hvordan jeg bedst bygger apps. Hermed et forsøg på at forklare nogle af disse på et ikke-teknisk sprog.<!--more--></p>
+<p>En app kan være mange ting. For mig er en app et lille program, der kan kører på en telefon, eller i en webbrowser / computer. Denne slags apps kaldes også web-apps eller hybrid-apps. Når jeg laver apps på denne måde, skriver jeg kun app&#8217;en en gang, og så kører den på alle telefoner og computere. Dette står i modsætning til rene native-apps, som man laver specifikt til én type telefon, og som til gengæld kan virke mere polerede.</p>
+<p>Ved udvikling af apps, skal der ofte laves to programmer: 1) selve &#8220;klient&#8221;-app&#8217;en der kører på telefonen eller lignende, og 2) &#8220;backend&#8217;en&#8221;, der kører på en server. Backend&#8217;en bruges til at dele informationer mellem klienterne. Forøjeblikket går jeg med overvejelser om, hvordan man kan lave apps, uden backends. Første trin er, at lave én generel backend, som kan bruges til at lave forskellige apps. Andet trin er at lave backend&#8217;en &#8220;distribueret/decentral&#8221;. Med distribueret mener jeg her et program, der ikke kører på en central server, men i stedet kunne køre på flere servere, eller endda kører på klienterne uden server.</p>
+<p>Der findes allerede generelle backends, hvor man ikke skal skrive et nyt serverprogram for hver app. Eksempler er <a href="http://nobackend.org/">http://nobackend.org/</a>, firebase(proprietær) <a href="http://hood.ie/">http://hood.ie/</a> (opensource), og flere andre. En generel backend skal typisk håndtere login (authentificering), kunne gemme data, og koordinere kommunikation mellem klienter. Disse backends kræver stadig en central server.</p>
+<p>Nogle fordele ved decentrale systemer er: 1) det er ikke muligt at bryde ind i én serveren og få adgang til alle data, 2) brugerne kan ikke overvåges på samme måde, 3) serveren er ikke en flaskehals i forhold til performance.</p>
+<hr />
+<p>En af udfordringerne ved at gøre dette decentralt er sikkerhed og adgangsstyring. En central server, med adgang til alle data, kan let styre og give klienter adgang til de data, som klienterne må arbejde med. Hvis der ikke er nogen central server, skal sikkerheden i stedet være bygget ind i data, hvilket er sværere.</p>
+<p>Begrebet sikkerhed dækker over flere ting: at kunne logge ind, adgang til at kunne læse data, authentificering af hvem der er ansvarlige for data, adgang til at kunne ændre data, etc. Hvis man har en central server, kan den bestemme og styre dette. I decentrale systemer kan dette udføres via &#8220;public/private-key kryptering&#8221;.</p>
+<p>Grundkonceptet i &#8220;public/private-key kryptering&#8221; er, at der er to kodeord/nøgler. Efter at man har brugt det ene kodeord til at gemme data, så kan man kun læse data igen, hvis man har det andet kodeord. Dette er kan blandt andet lade sig gøre, via noget matematik med nogle store primtal, som jeg ikke vil forsøge at forklare her. At gemme data på denne måde, er et eksempel på at kryptere data. Ofte kalder man det ene kodeord for den offentlige nøgle, og det andet kodeord for den private nøgle.</p>
+<p>Via kryptering, kan man have sikkerhedsfunktionaliteten <i>uden</i> en central server:</p>
+<ul class="org-ul">
+<li>Login, er det samme som at kende den private nøgle. De offentlige nøgler kender alle.</li>
+<li>Adgang til at læse data, gives ved at data krypteres, så de kun kan læses hvis man har den private nøgle. Data kan sendes til en anden bruger, så det kun er hende der kan læse det, ved at kryptere det med hendes offentlige nøgle.</li>
+<li>Du kan underskrive data, ved at kryptere data med din private nøgle. Andre kan tjekke din underskrift, ved at dekryptere data med din offentlige nøgle. Derved véd de, at det er dig, som har underskrevet data.</li>
+<li>Adgang til at skrive data kan styres ved at ændringer i data skal være underskrevet af den, der ejer data.</li>
+</ul>
+<p>Ovenstående beskrivelse er på et konceptuelt niveau, &#8211; for at det fungerer effektivt skal man også bruge &#8220;kryptografiske hashes&#8221;, &#8220;symmetriske cifre&#8221;, etc. hvilket er for langt, til at beskrive i detaljer her.</p>
+<p>Der er også andre udfordringer ved at lave en decentral backend. <a href="https://ipfs.io/">IPFS</a> løser nogle af disse. &#8220;Konflikt-frie replikerede datatype&#8221; løser andre aspekter af det. Alt i alt: det tekniske fundament til at bygge decentrale apps, ser ud til at være stabilt indenfor de næste par år.</p>
+<hr />
+<p>Et projekt jeg godt kunne finde på at lege med er: at lave en generel backend, som er designet, så den på længere sigt kunne laves om til at være fuldstændigt decentral.</p>
+<p>Første trin er, at definere den ønskede funktionalitet. En minimalt og lidt forenklet oversigt over påkrævet funktionalitet er:</p>
+<ul class="org-ul">
+<li>Login
+<ul class="org-ul">
+<li>Brugeren skal indtaste kodeord eller logge ind via af andres services.</li>
+<li>App&#8217;en får en privat nøgle og en offentlig nøgle tilbage. App&#8217;en kan også selv lave midlertidige nøgler.</li>
+<li>App&#8217;en kan bevise at den offentlige nøgle faktisk er brugerens.</li>
+</ul>
+</li>
+<li>Gemme data
+<ul class="org-ul">
+<li>Givet <b>privat nøgle</b>, <b>navn på data</b> og <b>dataindhold</b>, skal data gemmes.</li>
+<li>Givet <b>offentlig nøgle</b> og <b>navn på data</b>, skal dataindhold returneres.</li>
+</ul>
+</li>
+<li>Kommunikation mellem klienter
+<ul class="org-ul">
+<li>Givet en <b>privat nøgle</b> kan man abonnere på beskeder.</li>
+<li>Givet en <b>offentlig nøgle</b> og en <strong>besked</strong>, vil beskeden blive sendt til en af abonnenterne med den matchende private nøgle.</li>
+</ul>
+</li>
+</ul>
+<p>På dette fundament vil man kunne bygge rigtig mange typer apps, helt uden backend. Og øvrige typer apps, hvor det blot kræver at en særlig backend-bruger altid er logget ind mindst ét sted.</p>
+<p>Dette er muligt implementere decentralt på en effektiv måde (når en decentral infrastrukturen er klar, og med visse teknisk detaljer om synkronisering af datatype). Allerede nu, vil det relativt enkelt kunne implementeres med en central server, der senere kan erstattes af et decentralt system.</p>
+<p>At udtænke detaljerne hvordan / hvorfor / om dette hænger sammen, er et eksempel på den type intellektuelt &#8220;arbejde&#8221; som jeg holder af at dykke ned i for sjov. Dette er også et konkret eksempel på et af de projekter, som jeg tænker at prøve at bygge i praksis på et tidspunkt.</p>

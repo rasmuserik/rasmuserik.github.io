@@ -1,0 +1,12 @@
+---
+layout: post
+title: "Sorting photos with linux shell scripting"
+date: 2015-06-09 06:05:09
+---
+<p><strong>Problem:</strong> I had 20.000 pictures from the last couple of years laying around in a messy folder structure. The goal was to structure them in folders for each months and year.<br />
+<strong>Solution:</strong> a quick hack with a couple of lines of shell scripting:<!--more--></p>
+<p>Many image format, have embedded meta information in EXIF format, which can be extracted with the <em>identify</em> command. Ie.:<br />
+<em>identify -format %[exif:DateTime] IMG_6909.JPG</em><br />
+returns &#8220;2015:02:24 12:33:31&#8221;. <em>identify</em> is a part of ImageMagick, and works both on jpg files, and also raw-files if you install <em>ufraw-batch</em>.</p>
+<p>The year/month was then extracted as group 1 and 2 of a regexp <em>(dddd):(dd):.*</em> and the file was moved into the directory structure. I made sure that there were a sensible default value by appending a default directory name to output from <em>identify</em>, which would then just be passed through, as the regexp didn&#8217;t match when the output was empty.</p>
+<p>Finally <em>fdupes</em> removed duplicate files, as some images was laying around in multiple copies with different names.</p>

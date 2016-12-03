@@ -1,0 +1,17 @@
+---
+layout: post
+title: "Async loaded figwheel cljs"
+date: 2015-09-10 08:11:02
+---
+<p>As a part of developing ClojureScript widgets, I would like to be able to use figwheel development for code embedded in another site. The challenge is that the code is just loaded async from another url. This breaks the figwheel-setup as the relative paths does not work anymore, and scripts cannot be loaded with <code>document.write("&lt;</code><code>script ...&gt;");</code> which closure uses for loading.<!--more--></p>
+<p>Because the script is loaded async, the following error occur:</p>
+<p style="padding-left: 30px;"><code>Failed to execute 'write' on 'Document': It isn't possible to write into a document from an asynchronously-loaded external script unless it is explicitly opened.</code></p>
+<p>And the of course the figwheel source fails because, it has relative paths.</p>
+<p>Essentially this can be solved, by rewriting the figwheel entry javascript code with the following changes:</p>
+<ol>
+<li>No use of document.write</li>
+<li>Set goog.ENABLE_CHROME_APP_SAFE_SCRIPT_LOADING to true, which has the effect that closure will not use document.write for loading scripts.</li>
+<li>Manually load goog/deps.js, that closure tries to load before document.write was disabled for loading scripts.</li>
+</ol>
+<p>After these changes, it is possible to link to figwheel just async loading a single js-file, and have nice interactive cljs-widget development within another site 🙂</p>
+<p>Actual code <a href="https://github.com/rasmuserik/solsort-util/blob/0972268b21595dfcf34636c713f7deeee02d3d3c/resources/public/dev.js">here</a>.</p>

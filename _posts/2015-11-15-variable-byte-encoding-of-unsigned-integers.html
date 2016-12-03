@@ -1,0 +1,39 @@
+---
+layout: post
+title: "Variable byte encoding of unsigned integers."
+date: 2015-11-15 09:20:09
+---
+<p>Order can be preserved with variable byte integer encoding. Different implementations indicate optimisations in JavaScript.</p>
+<p><!--more--></p>
+<p>A common way to encode unsigned integer is to have a sequence of bytes, with 7-bit data, and 1-bit length encoding per byte. The naive implementation usually does not preserve the integer order into the lexicographical order of the encoded bytes, but is possible.</p>
+<p>Encoding:</p>
+<blockquote><p>bytes.append(number % 128)<br />
+number = number / 128<br />
+while number &gt; 0:<br />
+number = number &#8211; 1<br />
+bytes.append(128 + (number % 128))<br />
+number = number / 128<br />
+bytes.reverse()</p></blockquote>
+<p>Decoding:</p>
+<blockquote><p>number = 0<br />
+while true:<br />
+byte = getNextByte()<br />
+number = number * 128 + (byte % 128)<br />
+if byte &amp; 128:<br />
+number = number + 1<br />
+else:<br />
+break</p></blockquote>
+<p>The key elements to ensure that the lexicographical order of the binary strings preserve the order of the integers are:</p>
+<ol>
+<li>The binary string for an integer is unique by adding/subtracting 1 to the <em>number</em>. This both adds slightly larger rang, and guarantees we do not have the case where 1000000 00000001 and 00000001 would both decode to 1, &#8211; in contrast to some variable byte integer encodings.</li>
+<li>When being order-preserving, it is given that the most significant bit must be the one used for byte length encoding, and it must be 1 if there are more bytes to read and zero otherwise.</li>
+</ol>
+<p>This is useful if you have a lexicographically ordered binary keys, and want to encode arbitrary unsigned integers where you do not know the size beforehand. The concrete case I was thinking about was efficient encoding of timestamps appended into a sorted data structure, without hitting the year 2038 bug.</p>
+<p>I implemented a couple of versions in JavaScript with the following conclusions on v8:</p>
+<ul>
+<li>Implementation using typed arrays are 10-30x faster than using arrays (when optimised correctly).</li>
+<li>Optimising for only encoding 32bit integers, instead of up to 53 integer bits from a double, can yield about 30% performance.</li>
+<li>You need to benchmark each version individually, as the JIT otherwise can make the results incomparable, (even if you warm it up a bit).</li>
+<li>In JavaScript on V8 on a slow laptop, with above optimisations you can encode 1MB/s version, versus 40KB/s with the naïve version.</li>
+<li>GIST available here: <a href="https://gist.github.com/rasmuserik/47ce8e20e88f8443a79d">https://gist.github.com/rasmuserik/47ce8e20e88f8443a79d</a></li>
+</ul>

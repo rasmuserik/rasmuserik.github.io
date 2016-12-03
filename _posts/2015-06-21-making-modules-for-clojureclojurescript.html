@@ -1,0 +1,19 @@
+---
+layout: post
+title: "Making modules for Clojure/ClojureScript"
+date: 2015-06-21 06:27:45
+---
+<p>When packaging Clojure/ClojureScript modules:<!--more--></p>
+<ul>
+<li>Continuous integration testing can be done with travis-ci for open source projects. Just add a .travis.yml to the project which runs the tests, log in on travis-ci.org with github, and enable the project, &#8211; then every time you push a commit, the tests will be run automatically, and you will get a warning if something is wrong.</li>
+<li>Dependency tracking can be done with jarkeeper, ie. visiting jarkeeper.com/$GITHUB_USER/$PROJECT_NAME will show you whether the modules dependency is up to date.</li>
+<li>Clojars is the community maven repository for open source clojure modules, &#8211; this is where you easily can distribute your libraries etc. just run &#8220;lein depluy clojars&#8221; and it is up there, and can easily be found/used by other projects 🙂</li>
+<li>Github badges, &#8211; you can various dynamic information to the README on github, &#8211; by linking to certain images on travis, jarkeeper and clojars, your project page can show live status for unit testing, dependency tracking, and latest installable version of the project.</li>
+</ul>
+<p>When using Clojure + ClojureScript together:</p>
+<ul>
+<li>cljs.test is now available, so you can use the same test framework within ClojureScript and Clojure</li>
+<li>Feature expressions has landed, so you can make cljc files, which works both in Clojure and ClojureScript</li>
+<li>Take a look at <a href="https://github.com/bbatsov/clojure-style-guide">best practices</a></li>
+</ul>
+<p>Example project, that I am working on to learn how to make modules for ClojureScript, is available on <a href="https://github.com/rasmuserik/hello-module">https://github.com/rasmuserik/hello-module</a></p>

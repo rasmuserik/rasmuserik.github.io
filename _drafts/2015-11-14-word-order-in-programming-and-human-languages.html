@@ -1,0 +1,16 @@
+---
+layout: post
+title: "Word order in programming and human languages"
+date: 2015-11-14 05:45:25
+---
+<p>In linguistics human languages can be classified by word order, and interestingly enough, a similar pattern can be seen in programming languages.</p>
+<p><!--more--></p>
+<p>The clearly most popular word orders are subject-verb-object and subject-object-verb, and notably subject-verb-object languages include Mandarin, Spanish and English which is the three languages with most native speakers. There are also some language with verb-subject-object order, and very few with v-o-s, o-v-s, or o-s-v word order.</p>
+<p>Looking at programming language there is a similare structure:</p>
+<ul>
+<li>verb-subject-object structure are common with functional programming, and procedural programming. Lisp takes this to an extreme, where everything is prefix-operators <code>(print (+ 1 (* 2 3))</code>, but function application in most languages are written in this form (ie. in C <code>snprintf(target, strlen(blah), "content");</code> every function-calls(verbs) are followed by the subject and objects, &#8211; not the case for infix-operators though which has the form subject-verb-object) .</li>
+<li>subject-verb-object are popular with object oriented languages, ie. <code>turtle.forward(10); list.append("hello");</code> clearly has this format, and is also the case with infix operators such as <code>+,*</code> etc. in most programming languages, independet of paradigm.</li>
+<li>object-subject-verb is much more rare, but occurs in stack oriented languages like FORTH, PostScript, etc. <code>1 2</code> + and<code> "Hello World" PRINT.</code></li>
+</ul>
+<p>This might extend explain to some extend why functional, and stack-based language, feels difficult to some people, &#8211; as the sentence structure that you are expressing yourself in, is most likely different from your natural language.</p>
+<p>When making new (programming) languages, this can also be worth remembering when deciding on the syntax.</p>

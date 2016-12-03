@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Experience with Caddy webserver"
+date: 2016-05-03 06:04:24
+---
+<p>About a month ago, I changed webserver from nginx to <a href="https://caddyserver.com">caddy</a>.</p>
+<p>The difference between the two is that <a href="http://nginx.org/en">nginx</a> is the lean battletested major server, whereas caddy is simpler younger and surprisingly easy to use.</p>
+<p>I still recommend nginx (which is more mature), if you do not have the need for easy ssl-certificates and similar other features.</p>
+<p>My experience with caddy has been very positive, &#8211; it just worked for the setup I needed.</p>
+<p>Recently I have used it in two additional ways</p>
+<ul>
+<li>I needed a API-cors-proxy for a project I was working on, &#8211; it was almost trivial to setup.</li>
+<li>Instead of checking out the project I host, I have begun using caddy&#8217;s git-addon, which works like a charm. With webhooks, new versions of webapps are online immediately after I push to github, without any manual interaction.</li>
+</ul>
+<p>The minor downsides that I have had are</p>
+<ul>
+<li>Minor configuration tweaks: needed to add Host header etc. manually when proxying, and needed to Access-Control-Allow-Credentials header etc. when cors&#8217;ing. &#8211; not really an issue</li>
+<li>Caddy only starts if all sites works, and fails otherwise, &#8211; would be better if it started regardless (ie. some new sites initialisation fail due to letsencrypt-throttling, and then nothing worked, including other production sites).</li>
+<li>Slow startup after changes to configuration (server should just start serving, and then do additional initialisation in background, instead of waiting for all initialisation (including checking out git repositories) before starting up).</li>
+</ul>
+<p>but overall everything just works!<br />
+&#8211; which is amazing, so I&#8217;ll highly recommend it.</p>
+<p>&nbsp;</p>

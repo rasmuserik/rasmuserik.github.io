@@ -1,0 +1,33 @@
+---
+layout: post
+title: "Solsort backend tech"
+date: 2015-07-18 07:39:53
+---
+<p>I am in the process of updating the solsort backend tech stack. These are the criterias that I look into.<!--more--></p>
+<ul>
+<li>Good support for building html5-apps, preferably with offline support, &#8211; and backend code. I want to write all of this in ClojureScript.</li>
+<li>Framework for having clients updating content etc., and also support for building simple web solutions.</li>
+<li>Easy operations, &#8211; few moving parts, and prepared for scaleability.</li>
+</ul>
+<p>My conclusion is to use the following backend technologies:</p>
+<ul>
+<li>Own backend code is running on top on nodejs. If written such that all shared state are stored in the database then several instances of the backend code can run in parallel on different nodes, and thus it can be very scaleable.</li>
+<li>Web-like semi-static content managed by the clients are stored in WordPress, which is also used for simple web solutions. Data can be accessed directly through the WordPress REST API.</li>
+<li>Other data are stored in couchbase, &#8211; we already need a database that syncs with pouchdb for the html5 apps, and couchbase has good low-latency performance characteristics, which is important if backend-code should scale.</li>
+</ul>
+<p>So the low-end software, and service and stack that needs to be managed on the server(s) are:</p>
+<ul>
+<li>nginx as http-server/proxy for WordPress and couchbase-sync-gateway</li>
+<li>nodejs for running own backend code.</li>
+<li>MariaDB/MySQL and PHP for WordPress.</li>
+<li>Couchbase+sync-gateway for backend-data as well as persisted/sync&#8217;ed app data.</li>
+</ul>
+<p>All of these technologies are easy to quickly get up and running, &#8211; and also has the possibility to scale well if managed correctly.</p>
+<p>If I later need search capability, I would also add ElasticSearch. If I later need serious geographical data or relational database support, I would also add PostgreSQL. But neither of these are needed yet.</p>
+<p>The main issues that I feel with above stack are:</p>
+<ul>
+<li>While sync between PouchDB and Couchbase is possible, it is not as mature as the sync with CouchDB, &#8211; but CouchDB does not scale nor perform as well as Couchbase.</li>
+<li>PHP/MySQL is not my favourite technologies, but that is the price I must pay to include a mature mainstream CMS.</li>
+<li>While Couchbase is opensource, the culture around it feels more enterprise-like that opensource-like.</li>
+</ul>
+<p>But otherwise this seems to me to be the very best bet for a backend technology stack, for the area of solution that I am going into.</p>

@@ -1,0 +1,50 @@
+---
+layout: post
+title: "B-trie"
+date: 2015-10-07 10:37:17
+---
+<p>After I stumbled upon <a href="http://ipfs.io">ipfs</a>, I have been thinking a bit about how to implement an efficient data storage / database on top of this, especially targeting linked open data. This has resulted in the following data structures / algorithms, which I would be very curious to implement later, to see how it performs in practise.</p>
+<p><!--more--></p>
+<p>Intended features:</p>
+<ul>
+<li>Key-value-store</li>
+<li>Distributed/decentral</li>
+<li>Trustless (ie. intermediaries cannot fiddle with the data)</li>
+<li>Ordered traversal</li>
+<li>Snapshot support</li>
+<li>Compact (I assume that disk/network is the slowest resource)</li>
+<li>Scaleable</li>
+</ul>
+<p>Essentially any B-tree like append-only data structure using ipfs-addresses as pointers to blocks would do the job.</p>
+<p>For persistent/append-only data structures HAMT has shown to have good performance in memory. A Trie data structure includes prefix key compression reducing the size of the tree. B-trees is good for caching / out-of-memory data.</p>
+<p>I propose storing data in a trie with a half-octet alphabet (a la HAMT), and path compression, &#8211; and combining subtrees into immutable blocks which can then be stored out-of-memory. The half-octet alphabet is choosen, as that yield much smaller nodes than octets, and thus better performance when using it as a persistent data structure, &#8211; plus it is easier to pack into balanced blocks.</p>
+<p>Conceptually a node in the trie contains the following information:</p>
+<ul>
+<li>The prefix</li>
+<li>Either content/data (for leaf-nodes) or list of 1-16 child nodes.</li>
+<li>Total number of leafs for this subtree</li>
+</ul>
+<p>A node could live in two ways: 1) compact encoding within a block, backed to disk/network 2) non-distributed local memory representation. The following will focus on the compact encoding, &#8211; the local memory representation, is just a normal datastructure.</p>
+<p>In practise there would be four kinds of trie nodes in a block:</p>
+<ol>
+<li>Branch-nodes, &#8211; between 2 and 16 children, based on on the current half-octet</li>
+<li>Path-node, &#8211; a sequence of half-octets without branches</li>
+<li>Leaf, &#8211; the suffix content/data for the key+value. For small values this is encoded in the block, for large data, a single leaf-node lives in a separate block.</li>
+<li>Reference to external node, with count of leaf-nodes in sub-tree</li>
+</ol>
+<p>Every node has meta-information about it length (including children encoded in the block), &#8211; and node-type. This is an integer + 2 bits, which can be encoded with a variable number of bytes (number of bytes is encoded in 1 bit per byte). This will be 1-3bytes assuming a block size less than half a megabyte.</p>
+<ol>
+<li>Branch nodes are encoded with a 16bit bitmask, indicating which children it has, followed by meta-information for each child, and then the actual children. No pointers are needed, as the length of the children are known, and can just be skipped. Total node memory usage: 2 byte bitmask + 1-3 byte meta information.</li>
+<li>Path nodes contains a variable length encoded integer of the number of half-octets in the path, then the actual path data, and then followed by one child-node  with meta-info. A path node thus takes 1-2 byte length + actual data + 1-3 byte meta info.</li>
+<li>Leaf nodes just contains content: actual data excluding prefix + 1-? byte meta information (1-? as a leaf node might be longer than the usual block size). The content might also be compressed, with something similar to lz4, but using other leaf-nodes in block as context too.</li>
+<li>References contains variable integer encoded count of leaf-nodes in subtree, plus the actual reference &#8211; link to a ipfs content hash.</li>
+</ol>
+<p>Notice that the following information each node is implicit:</p>
+<ul>
+<li>The prefix of the node, is known through the access path to the node.</li>
+<li>The number of leafs in subtree for every, &#8211; as the leafs within the block is known, and number of leafs for external reference in the block is known.</li>
+<li>References to children of nodes, via known length and storage structure.</li>
+</ul>
+<p>The conversion into block happens through traversal of the non-distributed in-memory representation, where the known number of leafs are used to choose most balanced block-tree.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

@@ -1,0 +1,19 @@
+---
+layout: post
+title: "Trie performance"
+date: 2016-04-21 07:35:59
+---
+<p>I did a fun experiment this morning:</p>
+<ul>
+<li>implemented a simple Trie data structure in vanilla JavaScript</li>
+<li>benchmarked it against the built-in JavaScript object</li>
+</ul>
+<p>Beside being a key-value map, the Trie has the following additional benefits:</p>
+<ul>
+<li>It is a persistent data structure</li>
+<li>It is sorted, allowing ordered traversal etc.</li>
+</ul>
+<p>I did a simple benchmark: Insert 1.000.000 key/values, and then retrieve them. I would expect the Trie to be much slower that JavaScript objects, at least an order of magnitude.</p>
+<p>To my surprise, the Trie was only 2-4 times on slower on insertion than JavaScript Object. The retrieval performance of the Trie and the JavaScript Object was almost the same, actually the Trie usually beat the JavaScript Object my a couple of milliseconds.</p>
+<p>Locality might explain some of this, and more benchmarks are needed whether this was just an artifact of the benchmark, but the result was very surprising, as I would expect the built-in JavaScript Object to be much more optimised/performant than a simple Trie implementation. The Trie implementation also has room for progress.</p>
+<p>The source code is here: <a href="https://github.com/rasmuserik/trie-experiment/">https://github.com/rasmuserik/trie-experiment/</a></p>

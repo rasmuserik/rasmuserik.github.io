@@ -1,0 +1,17 @@
+---
+layout: post
+title: "PouchDB .get internals"
+date: 2015-07-08 05:29:06
+---
+<p>I decided to take a quick look at the PouchDB source code. How I explored the code:<!--more--> I choose an entry point of interest, for example how &#8216;get&#8217; works, &#8211; and then I started grepping/exploring the code. After finding &#8216;get&#8217; I looked into the implementation on top of LevelUp.</p>
+<ul>
+<li>PouchDB has storage/database adaptors in <b>lib/adapters/.</b> The backends are IndexedDB, WebSQL, LevelUp(LevelDB and others, primarily on node.js), and http-client for CouchDB etc.</li>
+<li>The actual get API-function is defined is passed through <strong>utils.adapterFun</strong>, which adds API-logging, and promises. PouchDB supports both calling with promises and callbacks.</li>
+<li>The entry point for get is in <strong>adapter.js</strong> which contains code that is common for the adapters. The http-adapter also overrides/defines it on its own, as the things is handled by remote CouchDB instead.</li>
+<li>adapter.js extract options, and implements the <strong>open_revs</strong> option, used for fetching all/specific older revisions. It also fetches attachments, and extract the specific doc etc.</li>
+<li>The object we get from the adapter contains a json-object, that has <strong>doc</strong>(document), <strong>metadata</strong>, and <strong>ctx</strong>(some kind of context, used for attachments and maybe also other stuff).</li>
+<li>The core implementation is ._get (in the leveldb adapter).</li>
+<li>It is wrapped in a read lock, which queues the reads and execute the next one from the queue.</li>
+<li>Each get has two LevelUP database gets: first it gets the metadata, and then it gets the actual document, which resides in a different data store.</li>
+</ul>
+<p>The code is easy to read, and appears to be well engineered. Could be interesting to add a node-couchbase adaptor some day, if time permits.</p>

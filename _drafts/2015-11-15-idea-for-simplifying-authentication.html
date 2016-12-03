@@ -1,0 +1,29 @@
+---
+layout: post
+title: "Idea for simplifying authentication"
+date: 2015-11-15 14:44:33
+---
+<p>What I do want from a login-service: authenticated users should return a public+private-key. I do not care about the login-provider, as long as I get a users pecific public+private key, as that is the thing I need for distributed untrusted apps.</p>
+<p>The idea is to implement this as a separate service, that decouples getting a keypair from login-method and login-provider.<br />
+<!--more--></p>
+<p>The service itself has two functionalities:</p>
+<ol>
+<li>Provide public/private key for authenticated users.</li>
+<li>Provide meta-data given a public key, ie. &#8211; reply whether public-key actually represent a verified user</li>
+</ol>
+<p>The API from the application point of view is simple:</p>
+<ul>
+<li>Redirect the user to the login-service website, and after the login, the user will be redirected back to the app, an api-key in the hash, that can be used to retrieve the public/private-key.</li>
+<li>REST endpoint for getting the public/private-key given an api-key</li>
+<li>REST endpoint for getting meta data given the public key</li>
+</ul>
+<p>The difficult part is the plethora of login-providers and methods. The nice thing here is that the application itself does not have to know anything about those. Possible methods of login includes:</p>
+<ul>
+<li>Unverified username/password</li>
+<li>Verified email</li>
+<li>Verified sms</li>
+<li>Central authority / oauth etc.: github, linkedin, twitter, facebook, google, &#8230;</li>
+<li>Local site, ie.: tinkuy, local wordpress, &#8230;</li>
+<li>Actual key, etc.</li>
+</ul>
+<p>&nbsp;</p>

@@ -1,0 +1,11 @@
+---
+layout: post
+title: "Open Danish bibliographic data, and semantic markup"
+date: 2015-06-11 15:02:42
+---
+<p>I recently contacted the Danish Ministry of Culture, about permissions for the national bibliographical data, and got the response that<!--more--> <a href="http://www.kulturstyrelsen.dk/institutioner/biblioteker/nationale-ordninger/nationalbibliografien/nationalbibliografisk-aftale/">the parts</a> that they own the copyright on, can be used freely and without conditions. So the core Danish national bibliography is now open data! 🙂</p>
+<p>(The email response from Kulturstyrelsen about open bibliographic data was &#8220;Jeg skal hermed meddele, at Kulturministeriet og Kulturstyrelsen finder, at du frit og uden betingelser kan anvende de nationalbibliografiske data, som ministeriet ifølge den nationalbibliografiske aftale har ejendomsretten til.&#8221;)</p>
+<p>This was the perfect excuse to play with semantic markup, &#8211; so I put some of the data online, together with recommendations from my recommendation engine, in simple html with some semantic annotations. You can see the result on <a href="http://solsort.com/bibdata">http://solsort.com/bibdata</a></p>
+<p><strong>Semantic markup</strong> is a way to make the things you write readable for machines, as well as humans, so a machine would be able to understand that the page is actually about a book with a given author, title, isbn, etc. There are two way (RDFa and microdata) to embed the information within html, and you can have different vocabularies. I just used microdata and the schema.org vocabulary.</p>
+<p>After making this prototype, I had my focus elsewhere, until I recently checked some web-statistics. There were a very high number of request from the google robots, &#8211; downloading literally a hundred thousand of bibliographic records, which were only linked through the recommendation engine. And to my big surprise, sometimes when I tried to search for the title of a book in the Danish google, my simple prototype/experiment of putting data online popped up on the first page of search results.</p>
+<p>So the conclusion is that it actually has an impact to put semantic information in your website. And this also inspires me to play more with linked open data.</p>

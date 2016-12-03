@@ -1,0 +1,54 @@
+---
+layout: post
+title: "MuBackend revisited"
+date: 2015-10-20 14:14:52
+---
+<p>Two months ago, I wrote about the idea/concept of a no-backend backend. The concept works well, but there is room for improvements:</p>
+<p><!--more--></p>
+<ul>
+<li>PouchDB/CouchDB does not fit naturally within the platform, &#8211; it is to imperative.</li>
+<li>CouchDB does not have super performance. It is ok, but it is an order of magnitude slower than LevelDB. And I only need a key-value store + clojure logic on top.</li>
+<li>I do not have the need for p2p yet, and the libraries are not mature enough.</li>
+<li>Authentication is not worked through.</li>
+</ul>
+<p>So now I am revisiting the MuBackend design, &#8211; looking at authentication, communication and sync&#8217;able storage.</p>
+<h3>Authentication.</h3>
+<p>The database and communication channels are partitioned into realms. If  you have the secret key to a realm, then you can write to the database, and receive communication. Any communication channel and data entry belongs in one realm. The realm identifier is the cryptographic hash of the secret key.</p>
+<h3>Communication</h3>
+<p>A message which is sent into a realm goes to one arbitrary client who have joined the realm. Anybody can send messages into a realm, but clients can only join realms for which they have the secret key. A client can join any number of realms. A message consist of:</p>
+<ul>
+<li>destination realm &#8211; the realm to which the message is sent</li>
+<li>destination mailbox &#8211; a handle for the client to sort incoming messages</li>
+<li>reply realm &#8211; optional, used for replying</li>
+<li>reply mailbox &#8211; optional, used for replying</li>
+<li>actual content.</li>
+</ul>
+<p>If a realm is empty, and the message has a reply address, then an empty message is sent back.</p>
+<p>The prerequisite for communication is a bidirectional message channel between client and MuBackend. This can be implemented over http, websockets, tcp, and other protocols. I intended to implement it on top of long-polling http first, to make it go though the cloudflare proxy, that the production server is living behind.</p>
+<p>That it is message oriented, avoids unnecessary round-trips. The reply address allows easy rpc implementation, and notifications about when we clearly know delivery failed.</p>
+<p>Having one random (or sender hashed or &#8230;) recipient for a messages in a realm allows for easy load-balancing computations etc.</p>
+<h3>HTTP-server</h3>
+<p>A http-request will be transformed into a message into a given mailbox/realm, and the response message will be the http-response. Any client can handle http-requests, as long as they have the keys to that realm. Of course the keys would only be given to trusted clients.</p>
+<h3>API</h3>
+<p>The core API is the ability to send and receiver messages, ie.:</p>
+<ul>
+<li>Communication <i>; a message is (dst-realm, dst-mbox, reply-realm, reply-mbox, content)</i>
+<ul>
+<li><code>send(msg)</code></li>
+<li>*<code>join(secret, realm)</code></li>
+<li><code>leave(realm)</code></li>
+<li><code>handler(f(msg))</code> &#8211; all results are received as messages given to the handler function.</li>
+</ul>
+</li>
+<li>Storage <em>; </em>
+<ul>
+<li><code>get(realm, key) -&gt; (version, value)</code></li>
+<li><code>subscribe(realm, key) -&gt; (version) stream</code></li>
+<li><span style="font-family: Inconsolata, monospace;">unsubscribe(realm)</span></li>
+<li>*<code>set(secret, realm, key, version, value) -&gt; version</code></li>
+<li>*<code>traverse(secret, realm, min-version) -&gt; (key, version) stream</code></li>
+</ul>
+</li>
+<li>Realm-hash for http-server given as environment variable to server</li>
+</ul>
+<p>Functions marked with * are those that need authentication. The realm id must be the SHA-224 hash of the secret.</p>

@@ -1,0 +1,19 @@
+---
+layout: post
+title: "Git workflow with github and waffle"
+date: 2015-08-05 05:19:13
+---
+<p>Github and waffle is a nice combo for the agile development process.<!--more--> Essentially bugs, feature requests, et cetera, all lives as issues in github, and then the labels changes as it goes through the various stages of the development process. Waffle helps out making a visual kanban, for those more visually inclined.</p>
+<p>The most important benefit of  choosing githubs issue tracker is that it makes the development process very transparent, and lowers the barrier for getting into the project. Ie. everybody that visit the project page has direct access to the current development status, and it is right there with the source code.</p>
+<p>The workflow when adding code is very nice with git, especially due to the branching. Making a new branch gives you your own version of the source code, which you can edit on, make changes etc., and when you have implemented the desired functionality you can easily merge it back into the mainline project.</p>
+<p>There are some convention for branching, and committing, that makes it integrate nicely with the issue tracker: if the branch is called 123-and-then-some-description, this actually tells the system that you are working on issue#123, and waffle will add the label &#8220;in progress&#8221; to the issue, so everybody can see that it is being worked on.</p>
+<p>Having a separate branch for each issue, also means that you can work on the issues independently. Ie. if you are implementing a large feature, and also need to do a quick bugfix, &#8211; then having it as separate branches, means that you can easily merge the bugfix into the mainline as well as the feature branch, without worrying about getting unfinished feature code into the mainline, etc.</p>
+<p>To make a new branch you use the commands:</p>
+<blockquote><p>git branch 123-and-then-some-description<br />
+git checkout 123-and-then-some-description</p></blockquote>
+<p>&#8211; and now you are working on a new &#8220;copy&#8221; of the code where you are working on the mentioned issue. This allows you to make changes, commit (make snapshots), and upload the changes to github, without altering the main project. When pushing changes to github, you need to do</p>
+<blockquote><p>git push &#8211;all</p></blockquote>
+<p>&#8211; to make sure that all branches are pushed upstream. Running in a separate branch, and pushing the work in progress back to github, also means that the automatic tests through travis-ci also runs on code in progress.</p>
+<p>When you fix a bug, it is good to include the comment &#8220;fixes #123&#8221; in the commit message, as this will automatically ensure that the pull request is linked to the issue, and that the issue will be closed when the pull request is accepted.</p>
+<p>So when the code is done, I just make a pull request. Having a pull request for each change, also enables code review, so we can read through each others code, and know what is going on.</p>
+<p>When using waffle for kanban, we have 5 columns: the backlog, blocked, in-progress, needs-review, and done. We do not have one for current-iteration, as the developers prioritises which issue to work on, &#8211; in a more scrum-like environment, it would make sense to add that 6th column. The backlog contains all the open issues. Blocked are issues that should be in progress, but cannot be worked on at the moment due to external causes, or other bugs. In progress are the issues we are currently coding on. Needs review are those issues which has been implemented, and has a pull-request, but where we have not had peer-review/or full test yet. For larger teams it would make sense to have another column for user-acceptance-testing/staging, before the final done.</p>

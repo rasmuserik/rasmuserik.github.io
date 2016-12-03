@@ -1,0 +1,13 @@
+---
+layout: post
+title: "Coding habit"
+date: 2015-08-19 22:55:13
+---
+<p>The last weeks, I have tuned the development environment to my preferences, and also thought a bit about how I develop, and what is important for me. Some of the more unusual approaches in my stack.<!--more--></p>
+<ul>
+<li>Literate programming, &#8211; I like the concept of literate programming, namely that the code is written so it is readable by people as well as computers. The idea of literate programming probably originates from Donald Knuth, and have not become widespread yet. Recently in the JavaScript (and CoffeeScript) I stumbled on it, especially with the docco-tool, and in Clojure there is margnolia, which is similar. My approach is a bit different, where I just have 5 lines of shell script, which transforms the code to a markdown file, which is then saved as the README.md of the projects, meaning that you actually get to see the literate code as the first thing when visiting the github project.</li>
+<li>Folding extreme, &#8211; I use the folding capability of my editor extensively, mainly about the headings in the literate programming (but sometimes also around function definitions. Think about the code as a book with headings, sub-headings, and more levels of sub-sub-headings. Folding means that you only have those sections open that you are currently working on, and that you can see and navigate the rest of the code/text as an interactive table of content. With good key-bindings, this makes it very fast to navigate the code, and at the same time gives a very good overview. It also encourages that you actually structure and refactor the code so it has a good structure.</li>
+<li>Repl-interaction/interactive programming is not unusual in clojure-environment, but it is very different from many other environments. Vim-fireplace+figwheel is really awesome and addictive.</li>
+<li>Only using the home-position of the keyboard is also a good habit, that I can recommend. Home position means, that I rarely move my hands from the middle of the keyboard, ie. rarely us arrow keys, and similar stuff. Using vim, the arrows are replaced by hjkl, and I do not have to reach for esc, as caps-lock is mapped as that. I even do not have to move my hands to move the pointer, due to using trackpoint instead of mouse or touchpad.</li>
+</ul>
+<p>That was just a quick overview of some of my coding habits.</p>

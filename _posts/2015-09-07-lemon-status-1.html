@@ -1,0 +1,29 @@
+---
+layout: post
+title: "Development structure, and Lemon status 1"
+date: 2015-09-07 12:10:59
+---
+<p>Currently I am changing my software development focus towards the creation <!--more-->of the Tinkuy/Lemon open source app/infrastructure, under the assumption that there will be funding to cover my basic cost of living. I will write more about the project content in a later post.</p>
+<h3>Development structure</h3>
+<p>A bit about how I think about my approcah for this kind of project:</p>
+<ul>
+<li>Open development, &#8211; you can follow the work I am doing almost live on github. Most things are public for ultimate transparency. It also gives a lot of infrastructure (continuous integration etc.) for free.</li>
+<li>Agile develpment, with backlog and issue tracking using github&#8217;s infrastructure, and kanban via waffle.io, &#8211; we are already using this for NewCircleMovement/tinkuy and it works well.</li>
+<li>I will make regular written status on how things are progressing, &#8211; this my usual practice when doing projects like this. As the project is public and open source, I will probably post the status here, at least twice a month, in addition to sharing it directly.</li>
+<li>I write mostly in English, in case non-Danish-speakers join the project later on.</li>
+<li>I will likely be at Tinkuy at 10&#8217;o&#8217;clock most Mon-Thu, available for the things that we will to collaborate or talk about. It could also make sense with a daily stand-up like it is common in agile methods.</li>
+</ul>
+<h3>Lemon Status</h3>
+<p>What I have done:</p>
+<ul>
+<li>I have spend some time preparing the tools I want to use for building the app and widgets. I have landed on the re-frame framework, and ClojureScript with figwheel, reagent, etc. I have written the beginning of a minimal, isomorphic server, and also some abstractions.</li>
+<li>Fixed events on tinkuy.dk so they also show duration, etc. &#8211; the code is ready to be merged into the main branch and pushed into production.</li>
+</ul>
+<p>The next things that I am going to focus on are:</p>
+<ul>
+<li>Include widget code on tinkuy.dk, &#8211; this will be a way where we can share functionality between the website and a future app. First I will just add the code for including widgets, and then I will start implementing concrete feature in the website that we choose together.</li>
+</ul>
+<p>Impediments:</p>
+<ul>
+<li>None right now, but soon I will need some APIs depending on which feature I should work on.</li>
+</ul>

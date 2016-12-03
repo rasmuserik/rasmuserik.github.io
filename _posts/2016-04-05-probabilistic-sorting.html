@@ -1,0 +1,29 @@
+---
+layout: post
+title: "Probabilistic sorting"
+date: 2016-04-05 16:27:33
+---
+<p>How can we quantify subjective information?<br />
+For example:</p>
+<ul>
+<li>I look through my calendar, and think it could be interesting to have a graph of the quality of each day</li>
+<li>For the posts in this blog, it could be interesting to sort them on different dimensions, such as technical level, which I like etc.</li>
+</ul>
+<p>It could be interesting to make/have a computer program, that continually shows two specimens, where you just have to tap on the one you like the most, and then you would get an ordering of the entire specimen set.</p>
+<p>This is easily possibly through running a standard sorting algorithm, with me as the comparison function 🙂 But sorting algorithms are not optimised for this kind of tasks.</p>
+<p>The problem is different from traditional sorting in several ways:</p>
+<ul>
+<li>The comparison function is very slow, and thus it should be heavily optimised for reducing the number of comparisons.</li>
+<li>The comparison function is imprecise, &#8211; it is a subjective matter, and thus there is no guarantee the answers are consistent / &#8220;correct&#8221; all the time.</li>
+<li>The sort should be interesting for the comparison function, ie. the choice of elements</li>
+<li>The result should be incremental, so if the comparison function stops, there should be a somewhat ordering of the elements.</li>
+</ul>
+<p>How could we measure such a sorting algorithm?</p>
+<ol>
+<li>have a comparison function, that has a built-in error rate.</li>
+<li>run the algorithm on a data set (list of random integers) and stop after a certain number of comparisons.</li>
+<li>sample the result, with random pair of elements, and probability that they are sorted, given their distance in the array.</li>
+</ol>
+<p>Of course traditional sorting algorithms can be used here, but it also leads to a class of probabilistic algorithms, for example: have each element has a probability distribution for their position in the dataset, and then the challenge is to find the comparison that reduces the overall uncertainty the most.</p>
+<p>This challenge is also related to a more general ranking problem, where you have repeated match/competition between pairs of elements, and the result determines the overall ranking.</p>
+<p>This is a fun problem to think about / dive into 🙂</p>

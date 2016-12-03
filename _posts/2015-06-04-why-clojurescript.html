@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Why ClojureScript?"
+date: 2015-06-04 09:03:52
+---
+<p>Some of the reasons why I try to use ClojureScript for new projects are:<!--more--></p>
+<ul>
+<li>The<strong> functional programming paradigm</strong> makes problem solving easier/faster, and code becomes nicer i my opinion.</li>
+<li><strong>core.async</strong> makes asynchronous code a lot nicer, which is a huge boon on the HTML5/nodejs platform. Essentially you code that looks linear instead of callback hell.</li>
+<li><strong>core.logic</strong> gives access to to logic/declarative programming.</li>
+<li>Immutable/<strong>persistent datastructures</strong> both supports functional programming, and when used it also improves the quality as many potential bugs related to mutable data are eliminated.</li>
+<li>It is a <strong>hosted language</strong>, meaning it is very interoperable with the <strong>HTML5 </strong>host platform, &#8211; runs nice in browsers, nodejs etc., and you can use all the usual APIs easily.</li>
+<li>It is <strong>Clojure</strong>, so code can be shared between the different platforms: JavaScript, JVM, .net.</li>
+<li>The <strong>module system</strong> is good, &#8211; in contrast to the JavaScript-platform.</li>
+<li>It has <strong>macros</strong> and meta programming support, which add an extra level of abstraction. This is also what enables logic programming, go-like asynchronous programming, optional typing etc. to be shipped just as a library, &#8211; where other languages would need to be reengineered.</li>
+<li>The <strong>community</strong> feels both very bright and pragmatic.</li>
+</ul>
+<p>Of course there are also some tradeofs:</p>
+<ul>
+<li><strong>Performance</strong> penalty, &#8211; it will be a bit slower if you write nice functional code, &#8211; but if you need really speed , you would rewrite the critical parts in C (emscripten) or GLSL anyhow. Also remember that the persistent datastructures build upon the assumption that we have a good generational garbage collector, which is not the case on all JavaScript implementations.</li>
+<li><strong>Compilation time/memory-usage</strong> is a bit high and requires java, which means it is not suitable for developing on phones/tablets(when offline) nor on low-end virtual hosts etc. (such as the c9.io development environment). Should have improved a bit recently though.</li>
+<li>It is <strong>not mainstream</strong> which means it is more difficult get accepted into projects and find developers who already know the language (though a random Clojure developer is most likely a lot more competent than than a random JavaScript developer).</li>
+</ul>

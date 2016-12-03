@@ -1,0 +1,18 @@
+---
+layout: post
+title: "Data JSON"
+date: 2015-11-18 12:43:05
+---
+<p>JSON is my preferred data exchange format: it is simple, it is human readable, and it is widely adopted.</p>
+<p>But it has one huge shortcoming: it does not support binary data.</p>
+<p>Here I propose an extended data format DJSON, which supports binary data, and at the same time also maps nicely into plain JSON.</p>
+<p><!--more--></p>
+<p>In order to to include binary data in JSON, we need to map it into strings somehow. For this, we have the <a href="https://en.wikipedia.org/wiki/Data_URI_scheme">data URI scheme</a> which allows binary data with a media type. Data URIs without media type can just map to binary data, or escaped strings, based on encoding.</p>
+<p>In the conversion from &#8220;JavaScript&#8221;-objects to DJSON, we want to encode</p>
+<ul>
+<li>[optional] Data with media-types, is encoded depending on media type as a data-url. The media type can be used to encode/decode custom data types, &#8211; and/or any media-type can be of general Blobs with content info etc.</li>
+<li>Binary data without mediatype,  is encoded as &#8220;data:;base64,&#8221;, followed by the base64 encoded data. This is not truely &#8220;text/plain&#8221; (default media type), but excluding the the media type for binary data, means that Blobs with any media type can be encoded/decoded.</li>
+<li>Strings starting with &#8220;data:&#8221;, also needs to be encoded/escaped, and the way to do this is to encode it as &#8220;data:,&#8221; followed by the &#8220;data:&#8230;&#8221; string. (Theoretically this could be either &#8220;data:,&#8221; or &#8220;data:;charset=utf-16,&#8221;, and while &#8220;charset=utf-16&#8221; is technically more correct, this is actually a strict superset of the default ASCII when JSON encodes 16-bit characters, so we shall just use the shorter/more readable &#8220;data:,&#8221; prefix).</li>
+</ul>
+<p>Decoding DJSON is simple, any string starting with &#8220;data:&#8221;, is decoded using the rules above, and anything else is just passed through.</p>
+<p>The API within JavaScript would be similar to the JSON-api, but additional methods: &#8220;jsonify&#8221; and &#8220;parseJson&#8221; to convert to/from ordinary JSON-objects, and async versions which returns a promise &#8220;stringifyAsync&#8221;, &#8230;, &#8220;parseJsonAsync&#8221;. It would also take an additional parameter for custom media types which is a map from content-type/object.constructor.name to a decoding/encoding function. (With special content-type &#8220;*/*&#8221; which matches unmatched content types, and special object.constructor.name &#8220;*&#8221; which matches unmatched objects).</p>

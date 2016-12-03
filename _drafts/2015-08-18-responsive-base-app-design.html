@@ -1,0 +1,46 @@
+---
+layout: post
+title: "Responsive base app design"
+date: 2015-08-18 10:43:39
+---
+<p>What is the perfect UI base for prototyping apps? If we start to look at the assumptions, then we can then derive a good layout and navigation.<!--more--></p>
+<h2>Assumptions:</h2>
+<p>&nbsp;</p>
+<p><strong>Principle of least astonishment.</strong> The more the application behave as expected, &#8211; the easier it is to use. The design should therefore be based on guidelines and best practise for the different platforms</p>
+<p><strong>Content is king.</strong> The content area is the most important part of the app, and any other navigational structure should take as little screen estate as possible.</p>
+<p><strong>Mobile first responsive prototype.</strong> The base design should be easy to use for prototyping. So the design should seamlessly scale up from the mobile application, to tablet and desktop use. It is easier to expand than to shrink a user interface, so the assumption will be to start mobile first.</p>
+<p><strong>Implementation detail: style is calculated on device</strong>. That means that we know the dimensions of viewport etc., and can do the style calculation directly based on that, instead of having a static style with media-queries.</p>
+<p><strong>Implementation detail: react(native).</strong> The UI will be made in react, and later also in react-native.</p>
+<p><strong>Consistent cross-platform design.</strong> I want to focus on the content, so the simplest solution is to have a standard design that works cross platform. This means to try to use approaches that is common across Android/iOS, and avoid approaches that is limited to single platform.</p>
+<h2>Navigation</h2>
+<p>On the mobile devices I see the following base overlays on the content view:</p>
+<ul>
+<li>Menu button floating in the top right corner. This is a persistent navigational tool, and becomes a part of the top bar, when the top bar is visible. The visuals is just the hamburger icon, which transforms into the cross-close icon when the menu is showing.</li>
+<li>Top Bar, also known as &#8220;Main Action Bar&#8221; in Android, and &#8220;Navigation Bar&#8221; in iOS, or similar to &#8220;Title bar&#8221; in desktop applications. Contains a back or home button in the top-left, a title in the top-center, and the menu button at the top-right. The home button can either have the standard home icon, or an app-specific logo. On mobile web hamburger-menu is common in a top bar. As the iOS design guidelines requires that a back-button for navigating hierarchies must be placed left-most, &#8211; and I want to have a consistent cross-platform design, and to have minimal clutter (1 home/back button, one title, and one menu), the layout of the top bar is given. It could also have other actions added.<br />
+<a href="https://developer.android.com/design/patterns/actionbar.html">https://developer.android.com/design/patterns/actionbar.html</a><br />
+<a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/Bars.html">https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/Bars.html</a></li>
+<li>An optional Bottom Bar, &#8211; spilt-action-bar in Android, and &#8220;Toolbar&#8221; in iOS, for actions in the current view. Placing this in the bottom makes most sense, given that you do not want the hand to obscure the view while interacting with the content.</li>
+</ul>
+<p>The menu itself is a separate view that slides in, and the content of the menu is given by the app. It could be tree structure menu, or just a set of menu items which are entry points to workflows.</p>
+<p>On desktops and landscape tablets, I see the top bar replaced by persistently showing the menu on the left hand side of the content, which gives a common web/app-layout.</p>
+<h2>Content components</h2>
+<p>There are some common content components:</p>
+<ul>
+<li>Forms/settings</li>
+<li>Maps</li>
+<li>Text/HTML5 content</li>
+<li>HTML5 content full device screen</li>
+<li>OpenGL for 2d and 3d drawing/animation</li>
+</ul>
+<h2>Layout</h2>
+<p>Base unit would be 1/8 of a portrait mobile, 1/16 of a landscape-mobile or portrait-tablet, or 1/24 of a landscape tablet. I would base it somewhat on  https://www.google.com/design/spec/layout/adaptive-ui.html</p>
+<p>The content area (if not full screen) would be 8 or 16 units wide depending on mobile or not. The menu would always be 8 units wide.</p>
+<p>On wide devices, 16 units will correspond to the width of a text column with max ca. 66 units for optimal readability.</p>
+<p>There will also be a 1/8 grid for content, for non-responsive content.</p>
+<p>Using base 1/8, makes it easy to hit the golden ratio, ie: 3/8;5/8. Also 1/8 width is approximately the minimal clickable button on a phone</p>
+<p>&nbsp;</p>
+<h2>Style</h2>
+<p>Generally based on android material design + iOS. But also using ghost buttons etc.</p>
+<p>Natively built app will lean more towards the platform design where possible.</p>
+<p>Use ubuntu-font consistently across the app for visual branding.</p>
+<p>&nbsp;</p>

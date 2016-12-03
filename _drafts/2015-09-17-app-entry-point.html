@@ -1,0 +1,49 @@
+---
+layout: post
+title: "App entry point"
+date: 2015-09-17 08:48:10
+---
+<p>I am trying to make general routing / entry point for different kinds of app usage. There are a lot of app entry-points, including: full apps, http-requests, widgets. When looking at different use cases, there are two kinds of requests:</p>
+<p><!--more--></p>
+<ul>
+<li>single, one-off requests, like http, api-calls, etc.</li>
+<li>reactive request, like interactive apps and widgets, or subscribed resources</li>
+</ul>
+<p>Also note that several entry points can be active at the same time, ie. widgets within a page or parallel http-requests.</p>
+<p>The initial use cases for the router will be:</p>
+<ul>
+<li>Fullpage react-html apps</li>
+<li>HTML5-widgets</li>
+<li>Static html generation (http-requests)</li>
+<li>REST-api</li>
+</ul>
+<p>Some likely future routing requirements might include:</p>
+<ul>
+<li>Command line arguments</li>
+<li>RPC, including p2p-rpc</li>
+<li>WebGL or canvas image generation, and interactive apps</li>
+<li>React-native apps</li>
+<li>&#8230;</li>
+</ul>
+<p>My current draft of what the structure would be is:</p>
+<p>A route is defined by: <code>(route "path" f)</code> where <code>f</code> is a function that takes an <code>options</code>-object as parameter, and returns a <code>result</code> object. <code>options</code> include</p>
+<ul>
+<li><code>:reactive</code> &#8211; whether the result will be shown reactively, or single run</li>
+<li><code>:id</code> &#8211; identifier for route execution, data specific to this execution should be altered in <code>(db (:id options))</code></li>
+<li><code>:args</code> data specific to this execution</li>
+<li><code>:path</code> path for this specific execution</li>
+<li>Probably later: <code>:accept</code> map of content-type/priorities, ie: <code>{"text/html" 0.9 "text/*" 0.1}</code></li>
+<li>Probably later: <code>:auth</code> authentication</li>
+</ul>
+<p><code>result</code> is unwrapped async/atom and can include:</p>
+<ul>
+<li><code>:type</code> can be <code>:html</code>, or content-type-string if <code>:content</code> is raw data, probably later also <code>:clj</code> <code>:json</code>, &#8230; later on.</li>
+<li>one of
+<ul>
+<li><code>:content</code></li>
+<li><code>:html</code> + <code>:title</code> and optionally <code>:css</code></li>
+</ul>
+</li>
+<li>Probably later: <code>:caching</code></li>
+</ul>
+<p>&nbsp;</p>

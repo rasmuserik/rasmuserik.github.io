@@ -1,0 +1,16 @@
+---
+layout: post
+title: "Server set up: Caddy and Docker"
+date: 2016-04-06 03:47:21
+---
+<p>Yesterday I changed my server set up to have: 1) Caddy as reverse proxy, instead of Nginx, and 2) Everything running within Docker.</p>
+<h2>Caddy</h2>
+<p><a href="https://caddyserver.com">Caddy</a> is simple web server with automatic https-certificates from <a href="https://letsencrypt.org/">letsencrypt</a>. This is hands down the easiest way to get https running.</p>
+<p>Why: I want https, with automatic certificate renewal and this is the easy way to do it: Just configure the virtual servers, and the rest is done automatically, without you needing to worry about anything. Nginx is still most mature of the two, but with Caddy it just works, with minimal hassle. The only challenges I had was that there were no Dockerfile for Caddy with CORS support, so I had to <a href="https://github.com/rasmuserik/whale/blob/master/caddy/Dockerfile">make</a> that myself, &#8211; and also that I manually had to add Host header when proxying, to make WordPress work properly.</p>
+<h2>Docker</h2>
+<p><a href="https://docker.com/">Docker</a> is a way to run / handle lightweight virtual machines. It also has a GitHub-like community for sharing images(machines), so the steps needed to have Piwik, WordPress, mysql, couchdb, &#8230; running is literally just to make a docker-compose file, like <a href="https://github.com/rasmuserik/whale/blob/master/docker-compose.yml">this</a>, where you define what servers you want.</p>
+<p>Every virtual server image is defined by a simple recipe (Dockerfile) defining how it is set up. This both makes it easy to set up, and also to read when using standard images.</p>
+<p>Another nice part is scaleability, &#8211; while all of my 12 virtual servers run on the same server now, they are configured in a way such that they are easy to distribute across different machines.</p>
+<h2>Conclusion</h2>
+<p>My design of server set up, was to make it as simple as possible to handle. The choice of Caddy and Docker seems very good so far, as the set up was relatively simple / straight forward, and everything works suprisingly well.</p>
+<p>A github repository for my configuration is at <a href="https://github.com/rasmuserik/whale">https://github.com/rasmuserik/whale/</a>. The Dockerfiles is also there, though they should move to separate repositories, and be published as images on <a href="https://hub.docker.com/">dockerhub</a>.</p>

@@ -1,0 +1,66 @@
+---
+layout: post
+title: "Peer app notes"
+date: 2015-08-22 11:58:32
+---
+<p>After getting starting with ClojureScript, I am thinking about whether and how to make applications, that are the same on server, and client side, where the app itself is a distributed network. <!--more--></p>
+<p>Basic concepts:</p>
+<ul>
+<li>Homogeneous API, &#8211; same stack for &#8220;client&#8221; and &#8220;server&#8221;. Essentially daemon processes as well as user applications should be the same kind of peers. Not just the same language, as with html5+node.js, but truly peer-oriented, where even the libraries are the same.</li>
+<li>Offline, &#8211; peers might disconnect from the network, and return back online later on.</li>
+<li>Distributed, &#8211; instead of thinking about an application running on a computer, we should try to think about the computer as a large network of peers.</li>
+<li>REST-configurable</li>
+</ul>
+<p>&nbsp;</p>
+<p>So what I need in addition to standard HTML5</p>
+<ul>
+<li>Message queues
+<ul>
+<li>Communication between peers</li>
+<li>Logging</li>
+<li>Offline-support</li>
+</ul>
+</li>
+<li>Database, with offline support and syncing
+<ul>
+<li>Offline support</li>
+<li>Also host resources</li>
+</ul>
+</li>
+<li>User authentication</li>
+<li>Caching and REST-support</li>
+<li>Daemons</li>
+<li>WebRTC-connection server</li>
+<li>Search/discovery</li>
+</ul>
+<p>The message queue, database, auth and daemons are the important once, the rest can be added later.</p>
+<p>Database can be solved PouchDB, (CouchDB or CouchBase+Sync+proxy for replication/serverside)</p>
+<p>Auth is done through a combination between the database and the mesage queue.</p>
+<p>Daemons are just daemonised headless browsers, &#8211; possibly with access to extra APIs, &#8211; but they connect as any other peer, and you can communicate with them through. Daemons can also be used for email, non-cors http, etc.</p>
+<p>The message queue is interesting. These are some thoughts about it:</p>
+<ul>
+<li>Channels are one-way, and have a unique send and receive endpoint, ie. it is random, and if you do not know the endpoint you cannot send or receive.</li>
+<li>A message consist of the following:
+<ul>
+<li>Timestamp, when arrived in the common db</li>
+<li>Session-id for the sender/client</li>
+<li>Message content</li>
+</ul>
+</li>
+<li>API
+<ul>
+<li>Create a new channel, &#8211; returns two endpoints (send/receive)</li>
+<li>Get authenticated user-id for a given session id</li>
+<li>Subscribe to messages on a channel since a given point in time, &#8211; or only new ones</li>
+<li>Send message to a channel</li>
+</ul>
+</li>
+<li>Underlying database
+<ul>
+<li>map from send-id to receive-id (not exposed)</li>
+<li>session-id to user-id</li>
+<li>messages (channel recieve-id, timestamp, message-content)</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>

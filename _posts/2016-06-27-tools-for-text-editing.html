@@ -1,0 +1,40 @@
+---
+layout: post
+title: "Tools for text editing"
+date: 2016-06-27 06:08:35
+---
+<p>Editing text is one of my main computer activities. This includes writing software, composing text, structuring my time (calendar etc. are text files), and managing my company (ledger is a text file, with programs to calculate vat). Good software and habits for editing text is therefore important.</p>
+<p>Choosing and mastering a good text editor is worthwhile endeavour.</p>
+<p>For the last 16+ years I have been using different versions of <a href="https://en.wikipedia.org/wiki/Vi">vi</a> as my primary text editor. It is a modal editor, with quite a steep learning curve, but it is without doubt the most efficient way (for me) to work with text.</p>
+<p><!--more--></p>
+<p>Most of the years I have been using <a href="http://vim.org/">Vi IMproved</a>, where I heavily utilize the folding capabilities.<br />
+This enables me to work very efficiently with outlines/mindmaps/tree-structures, &#8211; which I use for structuring source code, as well as notes, and my calendar / life.</p>
+<p>The core idea of folding is that areas of text can be collapsed into a single line.<br />
+Imagine a table of contents where each heading can expand to the actual content.</p>
+<p>These days I am writing a lot of <a href="https://en.wikipedia.org/wiki/Lisp_(programming_language)">Lisp</a> (<a href="http://clojure.org/">Clojure</a>) code.<br />
+This is making me change text editor,<br />
+as one of the best tools for lisp code editing is another editor <a href="https://en.wikipedia.org/wiki/Emacs">Emacs</a>.<br />
+Emacs is actually written in a dialect of lisp, and its tools for working with lisp text files has been perfected over decades.</p>
+<p>Fortunately there is a good vi-version of emacs: <a href="http://spacemacs.org/">spacemacs</a>, so I decided to change tool.</p>
+<p>My biggest hurdle switching, has been that the folding support is not as good as with vim, &#8211; and I use folding a lot with my calendar and note structure. I have tried to switch before, but returned to vim within hours or days, as it impeeded my productivity too much. Fortunately emacs has a mode for working with structured text, <a href="http://orgmode.org/">org-mode</a> which is quite similar to how I use folding to structure text. This time I managed to convert my notes, calendar, etc. into org-mode format, so now the switch is finally happening.</p>
+<p>Here are the keybindings that I like/find myself using often, as an spacemacs newbie</p>
+<dl class="org-dl">
+<dt>c-h i, spc ,, spc :, h spc</dt>
+<dd>info/help</dd>
+<dt>spc spc</dt>
+<dd>jump around in file</dd>
+<dt>c-u, c-d</dt>
+<dd>scroll up/dn</dd>
+<dt>c-x c-+/-/0/=</dt>
+<dd>change font size</dd>
+<dt>spc w v, spc w h/j/k/l, spc w c</dt>
+<dd>window navigation</dd>
+</dl>
+<p>Tips:</p>
+<ul class="org-ul">
+<li>org mode</li>
+<li>CIDER</li>
+<li>Add configuration layers in the dot-file (SPC f e d)</li>
+<li>Spacemacs ABC youtube videos is a good starting point</li>
+</ul>
+<p>Finding the best tool for the task is important. After getting more into spacemacs, I am pretty sure that this is my editor for the next decades, &#8211; and it feels very worth while to dive into.</p>

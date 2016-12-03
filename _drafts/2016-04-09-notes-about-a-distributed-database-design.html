@@ -1,0 +1,35 @@
+---
+layout: post
+title: "Notes about a distributed database design"
+date: 2016-04-09 06:53:00
+---
+<p>In my spare time, I am planning/designing a simple distributed database. Here is some of my notes.</p>
+<h2>The conceptual model</h2>
+<ul>
+<li>A database is a lexicographic sorted list of rows</li>
+<li>A row consist of fields (the number of them may vary)</li>
+<li>Append only operation, &#8211; though a time stamp field or similar may tell which data is current or deprecated, and deprecated data may be freed. This allows for easy distribution.</li>
+</ul>
+<p>&nbsp;</p>
+<h2>Security</h2>
+<p>In my opinion, security should be integrated with the data.</p>
+<p>The idea is that each table has a public/private key.<br />
+Every change/snapshot of the database is signed,<br />
+and the private key is the key to modifying it.<br />
+Having the write-key, gives write-access, and also read-access.<br />
+The hash of the private key, is the skeleton-key for read access.<br />
+A named encryption key can be derived from the skeleton-key,<br />
+as the hash of the name and the skeleton key.<br />
+Parts of the table can be a link to second table,<br />
+where the second table determines the access pattern.</p>
+<p>To summarise, there are three kind of keys:</p>
+<ul>
+<li>Write keys, which gives write(and read) access to a table.</li>
+<li>Skeleton keys, which gives full read access to all protected of a table.</li>
+<li>Read keys, which gives read access to one part of a protected table.</li>
+</ul>
+<p>All of this can be implemented with encryption, write keys works essentially like ipns, and the read-keys are just usual encryption.</p>
+<h2>Implementation design</h2>
+<p>The plan would be to implement this as a persistent trie data structure on top of ipfs. This eliminates the cost of common prefixes for the rows.</p>
+<p>The raw data is public, and security is achieved through encryption.</p>
+<p>Nodes with the write key of a table communicate, and do distributed merge of changes to the table. The table has a commit-cycle, corresponding to the latency between all the nodes with write access. New write-nodes can be added to the table, by just giving them the private key.</p>

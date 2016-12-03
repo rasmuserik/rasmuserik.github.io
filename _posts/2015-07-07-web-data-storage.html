@@ -1,0 +1,49 @@
+---
+layout: post
+title: "Web data storage"
+date: 2015-07-07 05:28:54
+---
+<p>In the browser itself you can save data in different ways. The main builtin approached are:<!--more--></p>
+<ul>
+<li>IndexedDB is the standard HTML5 database API. It works in newer browsers, but has some quirks on Safari, including all iDevices. There is an IndexedDBShim that runs on Safari and older browsers.</li>
+<li>WebSQL is essentially for SQLite available in the browser, &#8211; this is non-standard, but the best storage api on Safari. Only works in Chrome and Safari.</li>
+<li>LocalStorage is a simple synchronous key-value store with limited space.</li>
+</ul>
+<p>Due to differences in platforms, and the IndexedDB API being a bit unusual.., there are different databases in JavaScript, that builds on top of IndexedDB/WebSQL:</p>
+<ul>
+</ul>
+<ul>
+<li>PouchDB is CouchDB-like database for the browser. In my eyes this looks like the best bet for an in-browser database. It supports synchronisation of database to servers, multiple document versions, advanced queries. Also has a LevelUp(LevelDB and more) backend on node.js</li>
+<li>LocalForage is a simple async key-value storage on top of IndexedDB, WebSQL, and LocalStorage. Good if you just need key/value storage.</li>
+<li>LawnChair is a simple/tiny object storage, with various storage options. Was one of the best bet some years ago, but development is not that active anymore, and I would recommend LocalForage instead.</li>
+<li>IDB-wrapper is a wrapper for IndexedDB that makes the API easier to use.</li>
+<li>YDN-DB is a database on top of IndexedDB, WebSQL and LocalStorage, with queries, schemas etc. Uses google closure for building. If use case needs fulltext search, or indexes on top of LocalStorage, or is performance critical, this seems like a good bet.</li>
+</ul>
+<hr />
+<p>Quick comparison of PouchDB and YDN</p>
+<table>
+<tbody>
+<tr>
+<th></th>
+<th>PouchDB</th>
+<th>YDN</th>
+</tr>
+<tr>
+<th>Flavour</th>
+<td>CouchDB, including replication</td>
+<td>IndexedDB, plus advanced features</td>
+</tr>
+<tr>
+<th>Engineering</th>
+<td>node/browserify &#8211; more mainstream, easy development, also server-side support</td>
+<td>Google Closure &#8211; optimized, extra performance</td>
+</tr>
+<tr>
+<th>Community</th>
+<td>Many developers, thriving open source community</td>
+<td>Several developers, though there seem to be only one main developer, that also offers commercial support.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>IndexedDB performance hack: for raw performance key/value-storage, it is my experience that IndexedDB transactions slows things down. My workaround was to make a simple JavaScript key/value-storage wrapper on top of IndexedDB, that caches reads/writes in memory, and store changes to the database in bulks.</p>

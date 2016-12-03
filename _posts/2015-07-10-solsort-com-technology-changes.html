@@ -1,0 +1,10 @@
+---
+layout: post
+title: "solsort.com technology changes"
+date: 2015-07-10 07:07:28
+---
+<p>I am planning to change some part of the stack of solsort.com, these are the changes that I am looking into:<!--more--></p>
+<p><strong>Database:</strong> it currently use a wrapper on top of LevelDB on node, and on top of IndexedDB inside the browser. This gives very good performance, &#8211; and works well for the current solutions, &#8211; but it is just a simple key-value store. This scales well for mostly-static data, but for more features and better sync/replication the plan is to migrate to PouchDB, and later probably CouchBase on the backend.</p>
+<p><b></b><strong>Communication:</strong> it uses an Erlang-inspired message passing system between processes, &#8211; and also as the building block for RPC between client and server. The vision was that the clients and server(s) should work together as a truly distributed platform. This is overkill at the moment, adds too much complexity, and will be simplified to a client/server-model.</p>
+<p>&nbsp;</p>
+<p><strong>HTML rendering:</strong> is currently done through a hiccup/reagent-like library directly on top of react. It will be migrated to reagent, which is a better choice, after the decision, that it does not need to be a distributed platform where markup generation and rendering could happen in different processes.</p>

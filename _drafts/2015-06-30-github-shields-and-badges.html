@@ -1,0 +1,14 @@
+---
+layout: post
+title: "GitHub shields and badges"
+date: 2015-06-30 04:42:06
+---
+<p>When I make programming projects, I prefer to host them as open source on github. This is both because of github itself, and another aspect is also the plethora of 3rd party tools and services that are available for improving project quality. <!--more-->Many such services also can show some status of the project through a small icon, &#8220;badge&#8221;, or &#8220;shield&#8221;.</p>
+<p>I look at the badges, both on other projects, and on my own. When evaluating other projects it serves a quick indication of commitment to continuous integration testing, automatic enforcing of code style, etc. When having it on my own projects, it is a constant reminder, and quick link, to these quality measures. Services with badges that I use are:</p>
+<ul>
+<li>continuous integration testing with travis-ci. This automatically runs tests everytime you upload changes, &#8211; and also for patches, etc. Essentially you just add a very simple configuration file telling how the test is run, and the log in on the travis-ci website and enable the project. Then you have continuous testing.</li>
+<li>code linting with &#8220;code climate&#8221;. This does some automatic sanity checks on the code quality, ie. warns about duplicate code, obvious violation of coding style etc. Code climate also has some built in support for code coverage etc.</li>
+<li>dependency tracking with jarkeeper, gemnasium, &#8230; This helps me being aware if the project dependencies are up to date.</li>
+<li>project version status with clojars, npm, etc. Useful when adding the library from another project, and quickly want to check what the latest version was.</li>
+</ul>
+<p>There are nice services for code coverage, which I am considering using. Another inspiration is shield.io, which both serves as a list of services, and also itself generate the badges (though I prefer to use the original badges of the services). The concept of badges are also viral in a good way, ie. when I see that other libraries has their latest version shown via a clojars badge, and I find it practical to have this information, &#8211; I also start to use it on my projects.</p>
